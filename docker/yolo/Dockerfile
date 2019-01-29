@@ -48,14 +48,9 @@ RUN . devel/setup.sh && apt-get update && rosdep update \
 RUN cd src/yolo_ros && git   pull
 RUN . devel/setup.sh && catkin_make
 
-# setup gdrive
-WORKDIR /usr/local/bin
-RUN curl -JLO https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download \
-    && chmod +x gdrive-linux-x64 \
-    && mv gdrive-linux-x64 gdrive
-
 # download data
-RUN mkdir /catkin_ws/src/yolo_ros/data
+COPY ./gdrive /usr/local/bin
+RUN mkdir -p /catkin_ws/src/yolo_ros/data
 WORKDIR /catkin_ws/src/yolo_ros/data
 RUN gdrive download 1CHHccYks0Mgf2NGUDDFKIG_g6V8Il_QN
 
