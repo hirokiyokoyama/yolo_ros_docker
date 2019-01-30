@@ -49,10 +49,11 @@ RUN cd src/yolo_ros && git   pull
 RUN . devel/setup.sh && catkin_make
 
 # download data
+RUN mkdir ~/.gdrive
+COPY ./token_v2.json ~/.gdrive
 COPY ./gdrive /usr/local/bin
-RUN mkdir -p /catkin_ws/src/yolo_ros/data
-WORKDIR /catkin_ws/src/yolo_ros/data
-RUN gdrive download 1CHHccYks0Mgf2NGUDDFKIG_g6V8Il_QN
+WORKDIR /catkin_ws/src/yolo_ros
+RUN gdrive download --recursive 1CHHccYks0Mgf2NGUDDFKIG_g6V8Il_QN
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
