@@ -53,7 +53,7 @@ RUN mkdir /root/.gdrive
 COPY ./token_v2.json /root/.gdrive
 COPY ./gdrive /usr/local/bin
 WORKDIR /catkin_ws/src/yolo_ros
-RUN gdrive download --recursive 1CHHccYks0Mgf2NGUDDFKIG_g6V8Il_QN
+RUN gdrive download --recursive --force 1CHHccYks0Mgf2NGUDDFKIG_g6V8Il_QN
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
