@@ -16,3 +16,5 @@ sudo apt-get install -y nvidia-docker2
 sudo pkill -SIGHUP dockerd
 xhost local:root
 
+sudo curl -L https://github.com/docker/compose/releases/download/1.19.0-rc3/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
