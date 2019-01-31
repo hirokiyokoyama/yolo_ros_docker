@@ -2,19 +2,37 @@ version: '2.3'
 
 services:
   openni2:
-    build: openni2
+    build: ../images/openni2
     container_name: openni2
+    privileged: true
     environment:
       - "ROS_HOSTNAME=openni2"
       - "ROS_MASTER_URI=http://openni2:11311"
     command: roslaunch openni2_launch openni2.launch
 
   yolo:
-    build: yolo
+    build:
+      context: ../images/yolo
+      args:
+        tf_tag: latest-gpu
     container_name: yolo
     runtime: nvidia
     environment:
       - "ROS_HOSTNAME=yolo"
       - "ROS_MASTER_URI=http://openni2:11311"
     command: rosrun yolo_ros yolo.py --ckpt /catkin_ws/src/yolo_ros/data/yolo9000.ckpt --names /catkin_ws/src/yolo_ros/data/9k.names --tree /catkin_ws/src/yolo_ros/data/9k.tree image:=/camera/rgb/image_rect_color
+
+  visualize:
+    build:
+      context: ../images/yolo
+      args:
+        tf_tag: latest-gpu
+    container_name: visualize
+    environment:
+      - "ROS_HOSTNAME=visualize"
+      - "ROS_MASTER_URI=http://openni2:11311"
+      - "DISPLAY=unix$DISPLAY"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: rosrun yolo_ros visualize9000.py image:=/camera/rgb/image_rect_color
 

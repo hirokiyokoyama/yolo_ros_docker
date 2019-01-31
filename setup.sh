@@ -14,4 +14,5 @@ sudo apt-get -y install docker-ce
 sudo adduser `whoami` docker
 sudo apt-get install -y nvidia-docker2
 sudo pkill -SIGHUP dockerd
+xhost local:root
 

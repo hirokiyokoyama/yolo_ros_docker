@@ -1,4 +1,6 @@
-FROM tensorflow/tensorflow:latest-gpu
+ARG tf_tag=latest-gpu
+
+FROM tensorflow/tensorflow:${tf_tag}
 
 # install packages
 RUN apt-get update && apt-get install -q -y \
