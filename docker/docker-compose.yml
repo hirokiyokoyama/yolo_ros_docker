@@ -1,0 +1,20 @@
+version: '2.3'
+
+services:
+  openni2:
+    build: openni2
+    container_name: openni2
+    environment:
+      - "ROS_HOSTNAME=openni2"
+      - "ROS_MASTER_URI=http://openni2:11311"
+    command: roslaunch openni2_launch openni2.launch
+
+  yolo:
+    build: yolo
+    container_name: yolo
+    runtime: nvidia
+    environment:
+      - "ROS_HOSTNAME=yolo"
+      - "ROS_MASTER_URI=http://openni2:11311"
+    command: rosrun yolo_ros yolo.py --ckpt /catkin_ws/src/yolo_ros/data/yolo9000.ckpt --names /catkin_ws/src/yolo_ros/data/9k.names --tree /catkin_ws/src/yolo_ros/data/9k.tree image:=/camera/rgb/image_rect_color
+
