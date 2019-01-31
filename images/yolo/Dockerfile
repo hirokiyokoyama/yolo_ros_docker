@@ -41,14 +41,12 @@ WORKDIR /catkin_ws/src
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && catkin_init_workspace \
     && cd .. && catkin_make
 
-# setup yolo_tf
+# setup yolo_ros
 RUN git clone https://github.com/hirokiyokoyama/yolo_ros.git
 WORKDIR /catkin_ws
 RUN . devel/setup.sh && apt-get update && rosdep update \
     && rosdep install -y yolo_ros \
     && rm -rf /var/lib/apt/lists/*
-RUN cd src/yolo_ros && git   pull
-RUN . devel/setup.sh && catkin_make
 
 # download data
 RUN mkdir /root/.gdrive
@@ -58,9 +56,15 @@ WORKDIR /catkin_ws/src/yolo_ros/data
 RUN gdrive download 1qu5rdCz0DUAr_vdkmfLWxLJgpp1WzExd
 RUN tar -zxvf yolo_ros_data.tar.gz && rm -f yolo_ros_data.tar.gz
 
+# update yolo_ros
+ADD ./touch_me_to_update_yolo_ros /root/
+RUN cd /catkin_ws/src/yolo_ros && git pull
+RUN . /catkin_ws/devel/setup.sh && cd /catkin_ws && catkin_make
+
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
 
+WORKDIR /catkin_ws/src/
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
 
