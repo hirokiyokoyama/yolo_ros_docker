@@ -1,6 +1,7 @@
 ARG tf_tag=latest-gpu
 
 FROM tensorflow/tensorflow:${tf_tag}
+LABEL maintainer "hirokiyokoyama <hiroki.yokoyama@okadanet.org>"
 
 # install packages
 RUN apt-get update && apt-get install -q -y \
